@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sistema de Agendamento de Consultas UBS - Login</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "ubs-blue": "#2A75A5",
+                        "ubs-green": "#00A859",
+                        "ubs-gray-text": "#333333",
+                        "ubs-gray-placeholder": "#AAAAAA",
+                        "ubs-gray-border": "#DDDDDD",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+
+    <!-- Estilos customizados globais -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4">
+        <div class="w-full max-w-md space-y-8">
+
+            <!-- Header -->
+            <header class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined text-4xl text-ubs-blue">health_and_safety</span>
+                    <span class="text-2xl font-bold text-ubs-gray-text dark:text-background-light">Sistema UBS</span>
+                </div>
+
+                <h1 class="text-ubs-gray-text dark:text-gray-200 text-[32px] font-bold">
+                    Acesse sua conta
+                </h1>
+            </header>
+
+            <!-- Conteúdo Principal -->
+            <main>
+                <!-- Seletor de Usuário -->
+                <div class="flex px-4 py-3">
+                    <div class="flex h-12 flex-1 items-center justify-center rounded-xl bg-gray-200 dark:bg-gray-700 p-1">
+
+                        <label class="user-type-option flex h-full grow items-center justify-center rounded-lg px-2
+                            has-[:checked]:bg-background-light has-[:checked]:dark:bg-background-dark has-[:checked]:shadow-sm
+                            has-[:checked]:text-ubs-blue text-ubs-gray-text dark:text-gray-300 text-sm font-medium transition-all duration-200">
+                            <span class="truncate">Sou Paciente</span>
+                            <input checked class="invisible w-0" name="user-type-selector" type="radio" value="paciente"/>
+                        </label>
+
+                        <label class="user-type-option flex h-full grow items-center justify-center rounded-lg px-2
+                            has-[:checked]:bg-background-light has-[:checked]:dark:bg-background-dark has-[:checked]:shadow-sm
+                            has-[:checked]:text-ubs-blue text-ubs-gray-text dark:text-gray-300 text-sm font-medium transition-all duration-200">
+                            <span class="truncate">Sou Profissional</span>
+                            <input class="invisible w-0" name="user-type-selector" type="radio" value="profissional"/>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Formulário de Login -->
+                <form class="space-y-6 px-4" id="loginForm">
+
+                    <!-- Campo Email/CPF -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="loginEmailCpf">
+                            E-mail ou CPF
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">person</span>
+                            <input
+                                class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:ring-2 focus:ring-ubs-blue/50
+                                border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 pl-12 pr-4"
+                                id="loginEmailCpf" placeholder="Digite seu e-mail ou CPF" type="text" required/>
+                        </div>
+                    </div>
+
+                    <!-- Campo Senha -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="loginPassword">
+                            Senha
+                        </label>
+
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">lock</span>
+
+                            <input
+                                class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:ring-2 focus:ring-ubs-blue/50
+                                border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 pl-12 pr-12"
+                                id="loginPassword" placeholder="Digite sua senha" type="password" required/>
+
+                            <button type="button" class="password-toggle absolute right-0 top-0 flex h-full items-center justify-center px-4">
+                                <span class="material-symbols-outlined">visibility</span>
+                            </button>
+                        </div>
+
+                        <a class="mt-2 text-right text-sm font-medium text-ubs-blue hover:underline" href="esqueci-senha.html">
+                            Esqueci minha senha
+                        </a>
+                    </div>
+
+                    <!-- Botão -->
+                    <button type="submit" class="w-full rounded-lg bg-ubs-blue px-4 py-3.5 text-base font-semibold text-white shadow-sm h-14">
+                        Entrar
+                    </button>
+                </form>
+            </main>
+
+            <!-- Footer -->
+            <footer class="text-center pt-4">
+                <p class="text-sm text-ubs-gray-text dark:text-gray-400">
+                    Não tem uma conta?
+                    <a class="font-bold text-ubs-blue hover:underline" href="cadastro.html" id="cadastroLink">
+                        Cadastre-se
+                    </a>
+                </p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/users-db.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/debug.js"></script>
+
+    <script>
+        // Direciona para o cadastro correto baseado no tipo de usuário selecionado
+        document.addEventListener('DOMContentLoaded', function() {
+            const cadastroLink = document.getElementById('cadastroLink');
+            const userTypeRadios = document.querySelectorAll('input[name="user-type-selector"]');
+
+            function updateCadastroLink() {
+                const selectedType = document.querySelector('input[name="user-type-selector"]:checked').value;
+                if (selectedType === 'profissional') {
+                    cadastroLink.href = 'cadastro-profissionais.html';
+                } else {
+                    cadastroLink.href = 'cadastro.html';
+                }
+            }
+
+            updateCadastroLink();
+
+            userTypeRadios.forEach(radio => {
+                radio.addEventListener('change', updateCadastroLink);
+            });
+        });
+    </script>
+</body>
+</html>

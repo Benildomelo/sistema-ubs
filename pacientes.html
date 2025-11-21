@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Meus Pacientes - Sistema UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#101622",
+                        "card-light": "#F0F0F0",
+                        "card-dark": "#1E293B",
+                        "text-primary-light": "#333333",
+                        "text-primary-dark": "#F0F2F5",
+                        "text-secondary-light": "#555555",
+                        "text-secondary-dark": "#94A3B8",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex min-h-screen w-full flex-col pb-20">
+        <!-- Header -->
+        <header class="flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-card-light dark:border-card-dark/50 sticky top-0 z-10">
+            <div class="flex items-center gap-3">
+                <button onclick="window.history.back()" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">arrow_back</span>
+                </button>
+                <div class="flex flex-col">
+                    <h1 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">👥 Meus Pacientes</h1>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Gestão completa de pacientes</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4">
+            <!-- Estatísticas -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-card-light dark:bg-card-dark rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">group</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">24</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Total</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400">event_available</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">8</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Este Mês</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Pacientes -->
+            <section>
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold mb-3">Pacientes Recentes</h2>
+                <div class="space-y-2">
+                    <!-- Paciente 1 -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/20">
+                            <span class="material-symbols-outlined text-primary text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Carlos Mendes</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">45 anos • CPF: 123.456.789-00</p>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-xs">Última: 15/03/2024 - Hipertensão</p>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 transition-colors">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+
+                    <!-- Paciente 2 -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Fernanda Lima</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">32 anos • CPF: 987.654.321-00</p>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-xs">Última: 14/03/2024 - Check-up</p>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 transition-colors">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+
+                    <!-- Paciente 3 -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Ana Costa</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">28 anos • CPF: 456.789.123-00</p>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-xs">Última: 13/03/2024 - Pré-natal</p>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 transition-colors">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+
+                    <!-- Paciente 4 -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
+                            <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Roberto Santos</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">61 anos • CPF: 789.123.456-00</p>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-xs">Última: 12/03/2024 - Diabetes</p>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 transition-colors">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 h-20 bg-background-light dark:bg-card-dark border-t border-card-light dark:border-card-dark/50 flex justify-around items-center">
+            <a href="dashboard-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-xs font-medium">Início</span>
+            </a>
+            <a href="agenda-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-xs font-medium">Agenda</span>
+            </a>
+            <a href="pacientes.html" class="flex flex-col items-center gap-1 text-primary w-20 p-2 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-xs font-medium">Pacientes</span>
+            </a>
+            <a href="perfil-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">person</span>
+                <span class="text-xs font-medium">Perfil</span>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

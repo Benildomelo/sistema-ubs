@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Prontuário - Sistema UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "ubs-blue": "#2A75A5",
+                        "ubs-green": "#00A859"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center gap-3">
+            <button onclick="history.back()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">arrow_back</span>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-xl font-bold text-gray-900 dark:text-white">Prontuário Médico</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-300" id="patientName">Carregando...</p>
+            </div>
+            <button onclick="medicalRecord.printRecord()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">print</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="p-4 max-w-4xl mx-auto">
+        <!-- Informações do Paciente -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">👤 Informações do Paciente</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Nome Completo</label>
+                    <p class="text-gray-900 dark:text-white font-medium" id="infoNome">-</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Idade</label>
+                    <p class="text-gray-900 dark:text-white font-medium" id="infoIdade">-</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">CPF</label>
+                    <p class="text-gray-900 dark:text-white font-medium" id="infoCPF">-</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Telefone</label>
+                    <p class="text-gray-900 dark:text-white font-medium" id="infoTelefone">-</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abas de Navegação -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+            <div class="flex overflow-x-auto space-x-1 pb-2">
+                <button class="tab-button px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-white" data-tab="historico">
+                    📋 Histórico
+                </button>
+                <button class="tab-button px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-tab="prescricoes">
+                    💊 Prescrições
+                </button>
+                <button class="tab-button px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-tab="exames">
+                    🩺 Exames
+                </button>
+                <button class="tab-button px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-tab="alergias">
+                    ⚠️ Alergias
+                </button>
+            </div>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <div id="tabContent">
+            <!-- Conteúdo será carregado dinamicamente -->
+        </div>
+
+        <!-- Nova Anotação -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mt-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">✏️ Nova Anotação</h2>
+            <form id="newNoteForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo de Registro</label>
+                    <select id="noteType" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="consulta">Consulta de Rotina</option>
+                        <option value="retorno">Retorno</option>
+                        <option value="procedimento">Procedimento</option>
+                        <option value="emergencia">Atendimento de Emergência</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Anamnese</label>
+                    <textarea id="noteAnamnese" rows="4" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Descreva os sintomas e queixas do paciente..."></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Diagnóstico</label>
+                    <input type="text" id="noteDiagnostico" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Diagnóstico principal...">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Conduta</label>
+                    <textarea id="noteConduta" rows="3" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Conduta médica, orientações, etc..."></textarea>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" onclick="history.back()" class="flex-1 py-3 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Salvar Registro
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/prontuario.js"></script>
+</body>
+</html>

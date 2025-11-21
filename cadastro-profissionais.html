@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sistema de Agendamento de Consultas UBS - Cadastro Profissional</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "ubs-blue": "#2A75A5",
+                        "ubs-green": "#00A859",
+                        "ubs-gray-text": "#333333",
+                        "ubs-gray-placeholder": "#AAAAAA",
+                        "ubs-gray-border": "#DDDDDD",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+
+    <!-- Estilos Customizados -->
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4">
+        <div class="w-full max-w-md space-y-8">
+            <!-- Header -->
+            <header class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined text-4xl text-ubs-blue">health_and_safety</span>
+                    <span class="text-2xl font-bold text-ubs-gray-text dark:text-background-light">Sistema UBS</span>
+                </div>
+                <h1 class="text-ubs-gray-text dark:text-gray-200 text-[32px] font-bold">Cadastro Profissional</h1>
+                <p class="text-ubs-gray-text dark:text-gray-400 text-base">
+                    Preencha os dados abaixo para cadastrar como profissional de saúde
+                </p>
+            </header>
+
+            <!-- Main Content -->
+            <main>
+                <!-- Formulário de Cadastro Profissional -->
+                <form class="space-y-6 px-4" id="signupForm">
+                    <!-- Nome -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="nome">
+                            Nome
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">person</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal"
+                                id="nome" placeholder="Seu nome" type="text" required/>
+                        </div>
+                    </div>
+
+                    <!-- CRM -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="crm">
+                            CRM
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">badge</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal"
+                                id="crm" placeholder="SP-12345" type="text" required/>
+                        </div>
+                    </div>
+
+                    <!-- Especialidade -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="especialidade">
+                            Especialidade
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">medical_services</span>
+                            <select class="form-select w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 pl-12 pr-10 text-base font-normal appearance-none"
+                                id="especialidade" required>
+                                <option value="">Selecione a especialidade</option>
+                                <!-- As opções serão carregadas via JavaScript -->
+                            </select>
+                            <span class="material-symbols-outlined absolute right-4 text-ubs-gray-placeholder">expand_more</span>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="signupEmail">
+                            E-mail
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">mail</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal"
+                                id="signupEmail" placeholder="seu.email@exemplo.com" type="email" required/>
+                        </div>
+                    </div>
+
+                    <!-- CPF -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="cpf">
+                            CPF
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">badge</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal"
+                                id="cpf" placeholder="000.000.000-00" type="text" required/>
+                        </div>
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="phone">
+                            Telefone
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">phone</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal"
+                                id="phone" placeholder="(00) 00000-0000" type="tel" required/>
+                        </div>
+                    </div>
+
+                    <!-- Senha -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="signupPassword">
+                            Senha
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">lock</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-12 text-base font-normal"
+                                id="signupPassword" placeholder="Crie uma senha forte" type="password" required/>
+                            <button type="button" class="password-toggle absolute right-0 top-0 flex h-full items-center justify-center px-4 text-ubs-gray-placeholder">
+                                <span class="material-symbols-outlined">visibility</span>
+                            </button>
+                        </div>
+                        <p class="mt-2 text-xs text-ubs-gray-placeholder">
+                            A senha deve ter pelo menos 8 caracteres, incluindo letras e números
+                        </p>
+                    </div>
+
+                    <!-- Confirmar Senha -->
+                    <div class="flex flex-col">
+                        <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="confirmPassword">
+                            Confirmar Senha
+                        </label>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">lock</span>
+                            <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-12 text-base font-normal"
+                                id="confirmPassword" placeholder="Digite a senha novamente" type="password" required/>
+                            <button type="button" class="password-toggle absolute right-0 top-0 flex h-full items-center justify-center px-4 text-ubs-gray-placeholder">
+                                <span class="material-symbols-outlined">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Termos e Condições -->
+                    <div class="flex items-start space-x-2">
+                        <input type="checkbox" id="terms" class="mt-1 rounded border-ubs-gray-border text-ubs-blue focus:ring-ubs-blue" required/>
+                        <label for="terms" class="text-sm text-ubs-gray-text dark:text-gray-300">
+                            Concordo com os <a href="#" class="text-ubs-blue hover:underline">Termos de Uso</a> e
+                            <a href="#" class="text-ubs-blue hover:underline">Política de Privacidade</a>
+                        </label>
+                    </div>
+
+                    <!-- Botão de Cadastro -->
+                    <button type="submit" class="btn-success w-full rounded-lg bg-ubs-green px-4 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-ubs-green/90 focus:outline-none focus:ring-2 focus:ring-ubs-green h-14">
+                        Cadastrar como Profissional
+                    </button>
+                </form>
+            </main>
+
+            <!-- Footer -->
+            <footer class="text-center pt-4">
+                <p class="text-sm text-ubs-gray-text dark:text-gray-400">
+                    Já tem uma conta?
+                    <a class="font-bold text-ubs-blue hover:underline cursor-pointer" href="index.html">
+                        Fazer login
+                    </a>
+                </p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/users-db.js"></script>
+    <script src="js/cadastro-profissionais.js"></script>
+</body>
+</html>

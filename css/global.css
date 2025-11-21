@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+/* Animações suaves para transições */
+button, input, a {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Melhorar acessibilidade para foco */
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid #2A75A5;
+    outline-offset: 2px;
+}
+
+/* Loading states */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Animações de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}

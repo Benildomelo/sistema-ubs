@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard Profissional - UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style type="text/tailwindcss">
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#101622",
+                        "card-light": "#F0F0F0",
+                        "card-dark": "#1E293B",
+                        "text-primary-light": "#333333",
+                        "text-primary-dark": "#F0F2F5",
+                        "text-secondary-light": "#555555",
+                        "text-secondary-dark": "#94A3B8",
+                        "success": "#2E7D32",
+                        "warning": "#FFC107"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+
+        /* Melhorias para mobile */
+        @media (max-width: 640px) {
+            .stats-card {
+                margin: 0 0.25rem;
+            }
+
+            .bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* Animações suaves */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Status badges */
+        .status-confirmed {
+            background-color: #2E7D32;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #FFC107;
+            color: black;
+        }
+
+        .status-cancelled {
+            background-color: #D32F2F;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden pb-24">
+        <!-- Top App Bar ATUALIZADO -->
+        <header class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10 border-b border-card-light dark:border-card-dark/50">
+            <div class="flex items-center gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary">
+                    <span class="material-symbols-outlined text-white text-xl">stethoscope</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em]">Dr. João Silva</h1>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Médico Generalista</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <!-- Botão Notificações -->
+                <button onclick="professionalDashboard.showNotifications()" class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">notifications</span>
+                    <div class="absolute top-2 right-2 size-2.5 rounded-full bg-red-500 border-2 border-background-light dark:border-background-dark"></div>
+                </button>
+
+                <!-- Botão Sair -->
+                <button onclick="professionalDashboard.logout()" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" title="Sair">
+                    <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 fade-in">
+            <!-- Statistics Section -->
+            <section>
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Resumo do Dia</h2>
+                <div class="px-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col items-stretch justify-start rounded-xl bg-card-light dark:bg-card-dark shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:shadow-none p-4 stats-card">
+                            <div class="flex items-center gap-3">
+                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400">event_available</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">8</span>
+                                    <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Consultas Hoje</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-stretch justify-start rounded-xl bg-card-light dark:bg-card-dark shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:shadow-none p-4 stats-card">
+                            <div class="flex items-center gap-3">
+                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">group</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">3</span>
+                                    <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Pendentes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="pt-6 px-4">
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] pb-3">Ações Rápidas</h2>
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="professionalDashboard.newPatient()" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-card-light dark:bg-card-dark hover:bg-card-light/80 dark:hover:bg-card-dark/80 transition-colors">
+                        <span class="material-symbols-outlined text-2xl text-primary">person_add</span>
+                        <span class="text-text-primary-light dark:text-text-primary-dark text-sm font-medium text-center">Novo Paciente</span>
+                    </button>
+                    <button onclick="professionalDashboard.viewMedicalRecord()" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-card-light dark:bg-card-dark hover:bg-card-light/80 dark:hover:bg-card-dark/80 transition-colors">
+                        <span class="material-symbols-outlined text-2xl text-primary">description</span>
+                        <span class="text-text-primary-light dark:text-text-primary-dark text-sm font-medium text-center">Prontuário</span>
+                    </button>
+                    <button onclick="professionalDashboard.issuePrescription()" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-card-light dark:bg-card-dark hover:bg-card-light/80 dark:hover:bg-card-dark/80 transition-colors">
+                        <span class="material-symbols-outlined text-2xl text-primary">medication</span>
+                        <span class="text-text-primary-light dark:text-text-primary-dark text-sm font-medium text-center">Receitas</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Today's Agenda Section -->
+            <section class="pt-8">
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Agenda de Hoje</h2>
+                <div class="flex flex-col gap-2 px-2" id="today-agenda-list">
+                    <!-- Appointment items will be loaded by JavaScript -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex flex-col items-center justify-center min-w-16">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">08:00</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-xs">30 min</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Maria Santos</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Consulta de Rotina</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium status-confirmed">Confirmada</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex flex-col items-center justify-center min-w-16">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">09:00</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-xs">30 min</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">José Oliveira</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Retorno</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium status-confirmed">Confirmada</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex flex-col items-center justify-center min-w-16">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">10:30</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-xs">45 min</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Ana Costa</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Consulta Nova</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium status-pending">Pendente</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Patients Section -->
+            <section class="pt-8">
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Pacientes Recentes</h2>
+                <div class="flex flex-col gap-2 px-2" id="recent-patients-list">
+                    <!-- Patient items will be loaded by JavaScript -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/20">
+                            <span class="material-symbols-outlined text-primary text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Carlos Mendes</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Última: 15/03/2024</p>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 transition-colors" onclick="professionalDashboard.viewPatient('Carlos Mendes', '123.456.789-00')">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/20">
+                            <span class="material-symbols-outlined text-primary text-lg">person</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Fernanda Lima</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Última: 14/03/2024</p>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 transition-colors" onclick="professionalDashboard.viewPatient('Fernanda Lima', '987.654.321-00')">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending Tasks Section -->
+            <section class="pt-8">
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Tarefas Pendentes</h2>
+                <div class="flex flex-col gap-2 px-2" id="pending-tasks-list">
+                    <!-- Task items will be loaded by JavaScript -->
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
+                            <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-lg">description</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Prontuário Pendente</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Ana Costa - Consulta de 13/03</p>
+                        </div>
+                        <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">2 dias</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark mx-2">
+                        <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg">assignment</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Laudo de Exame</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">José Oliveira - Hemograma</p>
+                        </div>
+                        <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">1 dia</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <div class="fixed bottom-24 right-4 z-20">
+            <button id="fab" class="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark transition-transform hover:scale-105">
+                <span class="material-symbols-outlined text-3xl">add</span>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation Bar ATUALIZADA -->
+        <nav class="bottom-nav fixed bottom-0 left-0 right-0 h-20 bg-background-light dark:bg-card-dark border-t border-card-light dark:border-card-dark/50 flex justify-around items-center z-10">
+            <a href="dashboard-profissional.html" class="flex flex-col items-center gap-1 text-primary w-20 p-2 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-xs font-medium">Início</span>
+            </a>
+            <a href="agenda-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-xs font-medium">Agenda</span>
+            </a>
+            <a href="pacientes.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-xs font-medium">Pacientes</span>
+            </a>
+            <a href="perfil-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">person</span>
+                <span class="text-xs font-medium">Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/dashboard-profissional.js"></script>
+</body>
+</html>

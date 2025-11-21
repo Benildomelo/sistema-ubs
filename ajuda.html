@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Ajuda - Sistema UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "ubs-blue": "#2A75A5",
+                        "ubs-green": "#00A859"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center gap-3">
+            <button onclick="history.back()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">arrow_back</span>
+            </button>
+            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Ajuda & Suporte</h1>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="p-4 max-w-md mx-auto">
+        <!-- Contato Emergencial -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📞 Contato Emergencial</h3>
+            <div class="space-y-3">
+                <button onclick="callEmergency('192')" class="w-full flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-red-600">emergency</span>
+                        <span class="text-red-700 dark:text-red-300 font-medium">SAMU</span>
+                    </div>
+                    <span class="text-red-600 font-bold">192</span>
+                </button>
+
+                <button onclick="callEmergency('193')" class="w-full flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-red-600">local_fire_department</span>
+                        <span class="text-red-700 dark:text-red-300 font-medium">Bombeiros</span>
+                    </div>
+                    <span class="text-red-600 font-bold">193</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Perguntas Frequentes -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">❓ Perguntas Frequentes</h3>
+
+            <div class="space-y-3">
+                <div class="faq-item border-b border-gray-200 dark:border-gray-700 pb-3">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between text-left">
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Como agendar uma consulta?</span>
+                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    </button>
+                    <div class="faq-answer mt-2 text-sm text-gray-600 dark:text-gray-400 hidden">
+                        Para agendar uma consulta, clique no botão "+" no dashboard, selecione a especialidade, profissional, data, horário e unidade de saúde desejada.
+                    </div>
+                </div>
+
+                <div class="faq-item border-b border-gray-200 dark:border-gray-700 pb-3">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between text-left">
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Posso cancelar ou reagendar?</span>
+                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    </button>
+                    <div class="faq-answer mt-2 text-sm text-gray-600 dark:text-gray-400 hidden">
+                        Sim! Na seção "Meus Agendamentos" você pode cancelar ou reagendar consultas futuras clicando nos botões correspondentes.
+                    </div>
+                </div>
+
+                <div class="faq-item border-b border-gray-200 dark:border-gray-700 pb-3">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between text-left">
+                        <span class="font-medium text-gray-700 dark:text-gray-300">O que fazer se chegar atrasado?</span>
+                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    </button>
+                    <div class="faq-answer mt-2 text-sm text-gray-600 dark:text-gray-400 hidden">
+                        Em caso de atraso, entre em contato com a unidade de saúde. Após 15 minutos de atraso, sua consulta poderá ser cancelada.
+                    </div>
+                </div>
+
+                <div class="faq-item border-b border-gray-200 dark:border-gray-700 pb-3">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between text-left">
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Preciso levar documentos?</span>
+                        <span class="material-symbols-outlined text-gray-400">expand_more</span>
+                    </button>
+                    <div class="faq-answer mt-2 text-sm text-gray-600 dark:text-gray-400 hidden">
+                        Sim, leve documento de identidade com foto e cartão do SUS. Para primeira consulta na unidade, também é necessário comprovante de residência.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suporte -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">💬 Suporte</h3>
+
+            <div class="space-y-3">
+                <button onclick="contactSupport()" class="w-full flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+                    <span class="material-symbols-outlined text-blue-600">support_agent</span>
+                    <span class="text-blue-700 dark:text-blue-300 font-medium">Falar com Atendimento</span>
+                </button>
+
+                <button onclick="sendEmail()" class="w-full flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
+                    <span class="material-symbols-outlined text-green-600">email</span>
+                    <span class="text-green-700 dark:text-green-300 font-medium">Enviar E-mail</span>
+                </button>
+
+                <button onclick="viewManual()" class="w-full flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
+                    <span class="material-symbols-outlined text-purple-600">menu_book</span>
+                    <span class="text-purple-700 dark:text-purple-300 font-medium">Manual do Usuário</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Funções para Ajuda
+        function callEmergency(number) {
+            if (confirm(`Deseja ligar para ${number}? Este é um número de emergência.`)) {
+                window.open(`tel:${number}`);
+            }
+        }
+
+        function toggleFAQ(button) {
+            const answer = button.parentElement.querySelector('.faq-answer');
+            const icon = button.querySelector('.material-symbols-outlined');
+
+            answer.classList.toggle('hidden');
+            icon.textContent = answer.classList.contains('hidden') ? 'expand_more' : 'expand_less';
+        }
+
+        function contactSupport() {
+            alert('Em um sistema real, isso abriria um chat de suporte ou formulário de contato.\n\nTelefone de suporte: (11) 3456-7899\nHorário: Segunda a Sexta, 8h às 18h');
+        }
+
+        function sendEmail() {
+            alert('Em um sistema real, isso abriria o cliente de e-mail.\n\nE-mail de suporte: suporte@ubs-sistema.com.br');
+        }
+
+        function viewManual() {
+            alert('Manual do usuário em desenvolvimento. Em breve disponível para download.');
+        }
+    </script>
+</body>
+</html>

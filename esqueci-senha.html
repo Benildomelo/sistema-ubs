@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Recuperar Senha - Sistema UBS</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "ubs-blue": "#2A75A5",
+                        "ubs-green": "#00A859",
+                        "ubs-gray-text": "#333333",
+                        "ubs-gray-placeholder": "#AAAAAA",
+                        "ubs-gray-border": "#DDDDDD",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+
+    <!-- Estilos Customizados -->
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+
+        /* Animações para os passos */
+        .step {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .step.hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        .step.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Indicador de progresso */
+        .progress-bar {
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #2A75A5;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4">
+        <div class="w-full max-w-md space-y-8">
+            <!-- Header -->
+            <header class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined text-4xl text-ubs-blue">health_and_safety</span>
+                    <span class="text-2xl font-bold text-ubs-gray-text dark:text-background-light">Sistema UBS</span>
+                </div>
+                <h1 class="text-ubs-gray-text dark:text-gray-200 text-[32px] font-bold">Recuperar Senha</h1>
+                <p class="text-ubs-gray-text dark:text-gray-400 text-base">
+                    Siga os passos para redefinir sua senha
+                </p>
+            </header>
+
+            <!-- Barra de Progresso -->
+            <div class="px-4">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+                </div>
+                <div class="flex justify-between mt-2 text-xs text-ubs-gray-placeholder">
+                    <span class="text-ubs-blue font-medium">Email</span>
+                    <span>Código</span>
+                    <span>Nova Senha</span>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <main>
+                <!-- Passo 1: Informar Email -->
+                <div id="step1" class="step active space-y-6 px-4">
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-6xl text-ubs-blue mb-4">mail</span>
+                        <h2 class="text-xl font-semibold text-ubs-gray-text dark:text-gray-200 mb-2">
+                            Informe seu e-mail
+                        </h2>
+                        <p class="text-ubs-gray-text dark:text-gray-400 text-sm">
+                            Enviaremos um código de verificação para seu e-mail
+                        </p>
+                    </div>
+
+                    <form id="emailForm">
+                        <div class="flex flex-col">
+                            <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="email">
+                                E-mail cadastrado
+                            </label>
+                            <div class="relative flex w-full items-center">
+                                <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">mail</span>
+                                <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal"
+                                    id="email" placeholder="seu.email@exemplo.com" type="email" required/>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary w-full rounded-lg bg-ubs-blue px-4 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-ubs-blue/90 focus:outline-none focus:ring-2 focus:ring-ubs-blue h-14 mt-6">
+                            Enviar Código
+                        </button>
+                    </form>
+
+                    <div class="text-center">
+                        <a href="index.html" class="text-ubs-blue hover:underline text-sm font-medium">
+                            ← Voltar para o login
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Inserir Código -->
+                <div id="step2" class="step hidden space-y-6 px-4">
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-6xl text-ubs-blue mb-4">vpn_key</span>
+                        <h2 class="text-xl font-semibold text-ubs-gray-text dark:text-gray-200 mb-2">
+                            Verifique seu e-mail
+                        </h2>
+                        <p class="text-ubs-gray-text dark:text-gray-400 text-sm mb-2">
+                            Enviamos um código de 6 dígitos para:
+                        </p>
+                        <p class="text-ubs-blue font-medium" id="emailDisplay"></p>
+                    </div>
+
+                    <form id="codeForm">
+                        <div class="flex flex-col">
+                            <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="verificationCode">
+                                Código de verificação
+                            </label>
+                            <div class="relative flex w-full items-center">
+                                <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">vpn_key</span>
+                                <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-4 text-base font-normal text-center tracking-widest"
+                                    id="verificationCode" placeholder="000000" type="text" maxlength="6" required/>
+                            </div>
+                        </div>
+
+                        <div class="text-center text-sm text-ubs-gray-placeholder">
+                            <p id="countdown">Código expira em: <span class="font-mono">10:00</span></p>
+                            <button type="button" id="resendCode" class="text-ubs-blue hover:underline font-medium mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                Reenviar código
+                            </button>
+                        </div>
+
+                        <div class="flex gap-4 mt-6">
+                            <button type="button" id="backToStep1" class="btn-secondary flex-1 rounded-lg border border-ubs-gray-border dark:border-gray-600 px-4 py-3.5 text-base font-semibold text-ubs-gray-text dark:text-gray-300 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 h-14">
+                                Voltar
+                            </button>
+                            <button type="submit" class="btn-primary flex-1 rounded-lg bg-ubs-blue px-4 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-ubs-blue/90 focus:outline-none focus:ring-2 focus:ring-ubs-blue h-14">
+                                Verificar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Passo 3: Nova Senha -->
+                <div id="step3" class="step hidden space-y-6 px-4">
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-6xl text-ubs-green mb-4">lock_reset</span>
+                        <h2 class="text-xl font-semibold text-ubs-gray-text dark:text-gray-200 mb-2">
+                            Nova Senha
+                        </h2>
+                        <p class="text-ubs-gray-text dark:text-gray-400 text-sm">
+                            Crie uma nova senha para sua conta
+                        </p>
+                    </div>
+
+                    <form id="passwordForm">
+                        <div class="flex flex-col">
+                            <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="newPassword">
+                                Nova Senha
+                            </label>
+                            <div class="relative flex w-full items-center">
+                                <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">lock</span>
+                                <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-12 text-base font-normal"
+                                    id="newPassword" placeholder="Crie uma nova senha" type="password" required/>
+                                <button type="button" class="password-toggle absolute right-0 top-0 flex h-full items-center justify-center px-4 text-ubs-gray-placeholder">
+                                    <span class="material-symbols-outlined">visibility</span>
+                                </button>
+                            </div>
+                            <p class="mt-2 text-xs text-ubs-gray-placeholder">
+                                A senha deve ter pelo menos 8 caracteres, incluindo letras e números
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="text-ubs-gray-text dark:text-gray-300 text-base font-medium pb-2" for="confirmNewPassword">
+                                Confirmar Nova Senha
+                            </label>
+                            <div class="relative flex w-full items-center">
+                                <span class="material-symbols-outlined absolute left-4 text-ubs-gray-placeholder">lock</span>
+                                <input class="form-input w-full rounded-lg text-ubs-gray-text dark:text-gray-200 focus:outline-0 focus:ring-2 focus:ring-ubs-blue/50 border border-ubs-gray-border dark:border-gray-600 bg-background-light dark:bg-gray-800 h-14 placeholder:text-ubs-gray-placeholder pl-12 pr-12 text-base font-normal"
+                                    id="confirmNewPassword" placeholder="Digite a senha novamente" type="password" required/>
+                                <button type="button" class="password-toggle absolute right-0 top-0 flex h-full items-center justify-center px-4 text-ubs-gray-placeholder">
+                                    <span class="material-symbols-outlined">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 mt-6">
+                            <button type="button" id="backToStep2" class="btn-secondary flex-1 rounded-lg border border-ubs-gray-border dark:border-gray-600 px-4 py-3.5 text-base font-semibold text-ubs-gray-text dark:text-gray-300 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 h-14">
+                                Voltar
+                            </button>
+                            <button type="submit" class="btn-success flex-1 rounded-lg bg-ubs-green px-4 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-ubs-green/90 focus:outline-none focus:ring-2 focus:ring-ubs-green h-14">
+                                Redefinir Senha
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Passo 4: Sucesso -->
+                <div id="step4" class="step hidden space-y-6 px-4">
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-6xl text-ubs-green mb-4">check_circle</span>
+                        <h2 class="text-xl font-semibold text-ubs-gray-text dark:text-gray-200 mb-2">
+                            Senha Redefinida!
+                        </h2>
+                        <p class="text-ubs-gray-text dark:text-gray-400 text-sm">
+                            Sua senha foi redefinida com sucesso.
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="index.html" class="btn-primary inline-block rounded-lg bg-ubs-blue px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-ubs-blue/90 focus:outline-none focus:ring-2 focus:ring-ubs-blue">
+                            Fazer Login
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/password-recovery.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Agendar Consulta - Sistema UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "ubs-blue": "#2A75A5",
+                        "ubs-green": "#00A859"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 font-sans">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 p-4 border-b">
+        <div class="flex items-center gap-3">
+            <button onclick="history.back()" class="p-2">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <h1 class="text-xl font-bold">Agendar Consulta</h1>
+        </div>
+    </header>
+
+    <!-- Formulário de Agendamento -->
+    <main class="p-4 max-w-md mx-auto">
+        <form id="agendarForm" class="space-y-6">
+            <!-- Especialidade -->
+            <div>
+                <label class="block text-sm font-medium mb-2">Especialidade</label>
+                <select id="especialidade" class="w-full p-3 border rounded-lg" required>
+                    <option value="">Selecione a especialidade</option>
+                    <option value="Clínico Geral">Clínico Geral</option>
+                    <option value="Odontologia">Odontologia</option>
+                    <option value="Pediatria">Pediatria</option>
+                    <option value="Ginecologia">Ginecologia</option>
+                    <option value="Cardiologia">Cardiologia</option>
+                </select>
+            </div>
+
+            <!-- Profissional -->
+            <div>
+                <label class="block text-sm font-medium mb-2">Profissional</label>
+                <select id="profissional" class="w-full p-3 border rounded-lg" required>
+                    <option value="">Selecione o profissional</option>
+                </select>
+            </div>
+
+            <!-- Data -->
+            <div>
+                <label class="block text-sm font-medium mb-2">Data</label>
+                <input type="date" id="data" class="w-full p-3 border rounded-lg" required>
+            </div>
+
+            <!-- Horário -->
+            <div>
+                <label class="block text-sm font-medium mb-2">Horário</label>
+                <select id="horario" class="w-full p-3 border rounded-lg" required>
+                    <option value="">Selecione o horário</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                </select>
+            </div>
+
+            <!-- UBS -->
+            <div>
+                <label class="block text-sm font-medium mb-2">Unidade de Saúde</label>
+                <select id="ubs" class="w-full p-3 border rounded-lg" required>
+                    <option value="">Selecione a UBS</option>
+                    <option value="UBS Centro">UBS Centro</option>
+                    <option value="UBS Jardim">UBS Jardim</option>
+                    <option value="UBS Vila Nova">UBS Vila Nova</option>
+                </select>
+            </div>
+
+            <!-- Botão Agendar -->
+            <button type="submit" class="w-full bg-ubs-blue text-white p-3 rounded-lg font-semibold">
+                Confirmar Agendamento
+            </button>
+        </form>
+    </main>
+
+    <script src="js/users-db.js"></script>
+    <script src="js/agendar-consulta.js"></script>
+
+</body>
+</html>

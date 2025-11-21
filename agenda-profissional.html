@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Minha Agenda - Sistema UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        .status-confirmed {
+            background-color: #2E7D32;
+            color: white;
+        }
+        .status-pending {
+            background-color: #FFC107;
+            color: black;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#101622",
+                        "card-light": "#F0F0F0",
+                        "card-dark": "#1E293B",
+                        "text-primary-light": "#333333",
+                        "text-primary-dark": "#F0F2F5",
+                        "text-secondary-light": "#555555",
+                        "text-secondary-dark": "#94A3B8",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex min-h-screen w-full flex-col pb-20">
+        <!-- Header -->
+        <header class="flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-card-light dark:border-card-dark/50 sticky top-0 z-10">
+            <div class="flex items-center gap-3">
+                <button onclick="window.history.back()" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">arrow_back</span>
+                </button>
+                <div class="flex flex-col">
+                    <h1 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">📅 Minha Agenda</h1>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Agenda profissional completa</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4">
+            <!-- Estatísticas Rápidas -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-card-light dark:bg-card-dark rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400">event_available</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">12</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Esta Semana</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">schedule</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">3</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Hoje</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agenda de Hoje -->
+            <section class="mb-6">
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold mb-3">Agenda de Hoje</h2>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark">
+                        <div class="flex flex-col items-center justify-center min-w-16">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">08:00</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-xs">30 min</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Maria Santos</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Consulta de Rotina</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium status-confirmed">Confirmada</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-card-light dark:bg-card-dark">
+                        <div class="flex flex-col items-center justify-center min-w-16">
+                            <span class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">10:30</span>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-xs">45 min</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Carlos Mendes</h3>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Retorno</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium status-pending">Pendente</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Próximos Dias -->
+            <section>
+                <h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold mb-3">Próximos Dias</h2>
+                <div class="space-y-3">
+                    <div class="bg-card-light dark:bg-card-dark rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Amanhã</h3>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">5 consultas</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded">08:00</span>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded">09:30</span>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded">14:00</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-card-light dark:bg-card-dark rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-text-primary-light dark:text-text-primary-dark font-medium">Sexta-feira</h3>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark text-sm">7 consultas</span>
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">08:00</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">10:00</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">14:30</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 h-20 bg-background-light dark:bg-card-dark border-t border-card-light dark:border-card-dark/50 flex justify-around items-center">
+            <a href="dashboard-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-xs font-medium">Início</span>
+            </a>
+            <a href="agenda-profissional.html" class="flex flex-col items-center gap-1 text-primary w-20 p-2 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-xs font-medium">Agenda</span>
+            </a>
+            <a href="pacientes.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-xs font-medium">Pacientes</span>
+            </a>
+            <a href="perfil-profissional.html" class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+                <span class="material-symbols-outlined">person</span>
+                <span class="text-xs font-medium">Perfil</span>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

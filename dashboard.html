@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sistema de Agendamento de Consultas UBS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style type="text/tailwindcss">
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005EA2",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#101622",
+                        "card-light": "#F0F0F0",
+                        "card-dark": "#1E293B",
+                        "text-primary-light": "#333333",
+                        "text-primary-dark": "#F0F2F5",
+                        "text-secondary-light": "#555555",
+                        "text-secondary-dark": "#94A3B8",
+                        "success": "#2E7D32",
+                        "warning": "#FFC107"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+
+        /* Melhorias para mobile */
+        @media (max-width: 640px) {
+            .appointment-card {
+                margin: 0 0.5rem;
+            }
+
+            .bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* Animações suaves */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Melhorar acessibilidade do focus */
+        button:focus-visible, a:focus-visible {
+            outline: 2px solid #005EA2;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden pb-24">
+        <!-- Top App Bar -->
+        <header class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10 border-b border-card-light dark:border-card-dark/50">
+            <div class="flex items-center gap-3">
+                <div class="flex size-10 shrink-0 items-center justify-center">
+                    <!-- Avatar será gerado pelo JavaScript -->
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em]">Olá!</h1>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">Carregando...</p>
+                </div>
+            </div>
+            <div class="flex w-12 items-center justify-end">
+                <button class="relative flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 text-text-primary-light dark:text-text-primary-dark gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0 hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-2xl">notifications</span>
+                    <div class="absolute top-2 right-2 size-2.5 rounded-full bg-red-500 border-2 border-background-light dark:border-background-dark"></div>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 fade-in">
+
+            <!-- Seção Meus Agendamentos -->
+            <section class="pt-8">
+                <h2
+                    class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3">
+                    Meus Agendamentos</h2>
+                <div class="flex flex-col gap-2 px-2" id="my-appointments-list">
+                    <!-- Lista será carregada pelo JavaScript -->
+                </div>
+            </section>
+
+            <!-- Seção Histórico de Consultas -->
+            <section class="pt-8">
+                <h2
+                    class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3">
+                    Histórico de Consultas</h2>
+                <div class="flex flex-col gap-2 px-2" id="appointment-history-list">
+                    <!-- Lista será carregada pelo JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <div class="fixed bottom-24 right-4 z-20">
+            <button id="fab" class="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark transition-transform hover:scale-105">
+                <span class="material-symbols-outlined text-3xl">add</span>
+            </button>
+        </div>
+
+<!-- Bottom Navigation Bar - VERSÃO CORRIGIDA -->
+<nav
+    class="bottom-nav fixed bottom-0 left-0 right-0 h-20 bg-background-light dark:bg-card-dark border-t border-card-light dark:border-card-dark/50 flex justify-around items-center z-10">
+    <a href="dashboard.html"
+        class="flex flex-col items-center gap-1 text-primary w-20 p-2 rounded-lg transition-colors">
+        <span class="material-symbols-outlined">home</span>
+        <span class="text-xs font-medium">Início</span>
+    </a>
+    <a href="perfil.html"
+        class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+        <span class="material-symbols-outlined">person</span>
+        <span class="text-xs font-medium">Perfil</span>
+    </a>
+    <a href="unidades.html"
+        class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+        <span class="material-symbols-outlined">maps_home_work</span>
+        <span class="text-xs font-medium">Unidades</span>
+    </a>
+    <a href="ajuda.html"
+        class="flex flex-col items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark w-20 p-2 rounded-lg hover:bg-card-light dark:hover:bg-card-dark transition-colors">
+        <span class="material-symbols-outlined">help_outline</span>
+        <span class="text-xs font-medium">Ajuda</span>
+    </a>
+</nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/users-db.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

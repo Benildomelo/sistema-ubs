@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Sistema UBS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <header class="bg-white dark:bg-gray-800 p-4 border-b">
+        <div class="flex items-center gap-3">
+            <button onclick="history.back()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <h1 class="text-xl font-bold">👤 Meu Perfil</h1>
+        </div>
+    </header>
+
+    <main class="p-4 max-w-md mx-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+            <!-- Avatar e Informações -->
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span class="material-symbols-outlined text-white text-3xl">person</span>
+                </div>
+                <h2 class="text-xl font-bold">Dr. João Silva</h2>
+                <p class="text-gray-600">Médico Generalista</p>
+                <p class="text-sm text-blue-600">CRM: SP-12345</p>
+            </div>
+
+            <!-- Informações Pessoais -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">E-mail</label>
+                    <p class="text-gray-900 dark:text-white">joao.silva@ubs.com</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Telefone</label>
+                    <p class="text-gray-900 dark:text-white">(11) 99999-9999</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Especialidade</label>
+                    <p class="text-gray-900 dark:text-white">Clínico Geral</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Unidade de Atuação</label>
+                    <p class="text-gray-900 dark:text-white">UBS Centro</p>
+                </div>
+            </div>
+
+            <button onclick="history.back()" class="mt-6 w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                Voltar ao Dashboard
+            </button>
+        </div>
+    </main>
+</body>
+</html>
