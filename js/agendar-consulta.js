@@ -1,4 +1,4 @@
-// agendar-consulta.js - VERSÃO COM REAGENDAMENTO CORRETO
+// agendar-consulta.js - VERSÃO COM UNIDADES CORRETAS E PROFISSIONAL BLOQUEADO
 document.addEventListener("DOMContentLoaded", function () {
   console.log("=== INICIANDO AGENDAR CONSULTA ===");
 
@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Carregar e preencher unidades
   carregarEPreencherUnidades();
 
-  // Restante do código permanece igual...
   const especialidadeSelect = document.getElementById("especialidade");
   const profissionalSelect = document.getElementById("profissional");
 
@@ -58,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Preencher especialidade
     if (data.especialidade) {
       especialidadeSelect.value = data.especialidade;
+      // Disparar evento para carregar profissionais
       especialidadeSelect.dispatchEvent(new Event("change"));
     }
 
@@ -65,9 +65,17 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
       if (data.profissionalId) {
         profissionalSelect.value = data.profissionalId;
-        profissionalSelect.dispatchEvent(new Event("change"));
+
+        // CORREÇÃO: BLOQUEAR SELECT DO PROFISSIONAL NO REAGENDAMENTO
+        profissionalSelect.disabled = true;
+        profissionalSelect.title =
+          "Não é possível alterar o profissional no reagendamento";
+
+        // Adicionar estilo visual para indicar que está bloqueado
+        profissionalSelect.style.backgroundColor = "#f3f4f6";
+        profissionalSelect.style.cursor = "not-allowed";
       }
-    }, 100);
+    }, 200);
 
     // Preencher unidade
     if (data.ubs) {
@@ -75,12 +83,22 @@ document.addEventListener("DOMContentLoaded", function () {
       if (typeof data.ubs === "object") {
         ubsSelect.value = data.ubs.id;
       } else {
-        ubsSelect.value = data.ubs;
+        // Tentar encontrar a unidade pelo nome se for string
+        const unidades = carregarUnidades();
+        const unidadeEncontrada = unidades.find((u) => u.nome === data.ubs);
+        if (unidadeEncontrada) {
+          ubsSelect.value = unidadeEncontrada.id;
+        }
       }
     }
 
     // Atualizar título da página
     document.querySelector("h1").textContent = "Reagendar Consulta";
+
+    // Adicionar badge de reagendamento
+    const titulo = document.querySelector("h1");
+    titulo.innerHTML +=
+      ' <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded ml-2">Reagendamento</span>';
   }
 
   // Atualizar profissionais quando especialidade mudar
@@ -97,6 +115,11 @@ document.addEventListener("DOMContentLoaded", function () {
         profissionalSelect.appendChild(option);
       });
     }
+
+    // Se for reagendamento, manter o profissional bloqueado
+    if (isReschedule) {
+      profissionalSelect.disabled = true;
+    }
   });
 
   // Configurar data mínima (hoje)
@@ -107,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   dataInput.min = hojeAjustado.toISOString().split("T")[0];
 
-  // Form submission - CORREÇÃO PARA REAGENDAMENTO
+  // Form submission
   const agendarForm = document.getElementById("agendarForm");
   agendarForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -272,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2000);
   }
 
-  // Restante do código (configurarDependenciasCampos, configurarHorariosDisponiveis, etc.)
+  // Configurar dependências dos campos
   function configurarDependenciasCampos() {
     const campos = {
       especialidade: document.getElementById("especialidade"),
@@ -287,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
     campos.horario.disabled = true;
 
     campos.especialidade.addEventListener("change", function () {
-      campos.profissional.disabled = !this.value;
+      campos.profissional.disabled = !this.value || isReschedule; // Mantém bloqueado se for reagendamento
       if (!this.value) {
         campos.data.disabled = true;
         campos.horario.disabled = true;
@@ -383,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   configurarHorariosDisponiveis();
 
-  // Funções para carregar unidades (manter as mesmas)
+  // FUNÇÕES PARA CARREGAR UNIDADES - USANDO AS MESMAS DO unidades.js
   function carregarUnidades() {
     let unidadesSalvas = localStorage.getItem("ubs_unidades");
 
@@ -391,8 +414,128 @@ document.addEventListener("DOMContentLoaded", function () {
       return JSON.parse(unidadesSalvas);
     }
 
+    // Dados reais das UBSs de Teresina - PI (mesmo do unidades.js)
     const unidadesPadrao = [
-      // ... (mesmo array de unidades do código anterior)
+      {
+        id: 1,
+        nome: "UBS Parque Piauí",
+        endereco: "Rua 12, Parque Piauí - Teresina, PI",
+        telefone: "(86) 3216-1650",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
+        distancia: "2.1 km",
+        lat: -5.0921,
+        lng: -42.8038,
+      },
+      {
+        id: 2,
+        nome: "UBS Vila Bandeirante",
+        endereco: "Rua São Pedro, Vila Bandeirante - Teresina, PI",
+        telefone: "(86) 3216-1651",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "3.5 km",
+        lat: -5.0689,
+        lng: -42.7972,
+      },
+      {
+        id: 3,
+        nome: "UBS São Joaquim",
+        endereco: "Av. Principal, São Joaquim - Teresina, PI",
+        telefone: "(86) 3216-1652",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "4.2 km",
+        lat: -5.1156,
+        lng: -42.7758,
+      },
+      {
+        id: 4,
+        nome: "UBS Mocambinho",
+        endereco: "Rua 10, Mocambinho - Teresina, PI",
+        telefone: "(86) 3216-1653",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
+        distancia: "5.8 km",
+        lat: -5.0572,
+        lng: -42.7669,
+      },
+      {
+        id: 5,
+        nome: "UBS Buenos Aires",
+        endereco: "Rua São José, Buenos Aires - Teresina, PI",
+        telefone: "(86) 3216-1654",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "1.8 km",
+        lat: -5.0817,
+        lng: -42.7894,
+      },
+      {
+        id: 6,
+        nome: "UBS Poti Velho",
+        endereco: "Av. Boa Esperança, Poti Velho - Teresina, PI",
+        telefone: "(86) 3216-1655",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "3.2 km",
+        lat: -5.0664,
+        lng: -42.8111,
+      },
+      {
+        id: 7,
+        nome: "UBS Santa Maria da Codipe",
+        endereco: "Rua Santa Maria, Santa Maria da Codipe - Teresina, PI",
+        telefone: "(86) 3216-1656",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "6.1 km",
+        lat: -5.1233,
+        lng: -42.7556,
+      },
+      {
+        id: 8,
+        nome: "UBS Parque Sul",
+        endereco: "Av. Central, Parque Sul - Teresina, PI",
+        telefone: "(86) 3216-1657",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
+        distancia: "4.5 km",
+        lat: -5.0989,
+        lng: -42.755,
+      },
+      {
+        id: 9,
+        nome: "UBS Gurupi",
+        endereco: "Rua Principal, Gurupi - Teresina, PI",
+        telefone: "(86) 3216-1658",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "7.2 km",
+        lat: -5.135,
+        lng: -42.7889,
+      },
+      {
+        id: 10,
+        nome: "UBS Saci",
+        endereco: "Rua São Paulo, Saci - Teresina, PI",
+        telefone: "(86) 3216-1659",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "2.8 km",
+        lat: -5.0711,
+        lng: -42.7722,
+      },
+      {
+        id: 11,
+        nome: "UBS Vila Operária",
+        endereco: "Rua da Paz, Vila Operária - Teresina, PI",
+        telefone: "(86) 3216-1660",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
+        distancia: "1.5 km",
+        lat: -5.0883,
+        lng: -42.8,
+      },
+      {
+        id: 12,
+        nome: "UBS Promorar",
+        endereco: "Av. dos Imigrantes, Promorar - Teresina, PI",
+        telefone: "(86) 3216-1661",
+        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
+        distancia: "5.3 km",
+        lat: -5.1056,
+        lng: -42.7333,
+      },
     ];
 
     localStorage.setItem("ubs_unidades", JSON.stringify(unidadesPadrao));
@@ -411,6 +554,8 @@ document.addEventListener("DOMContentLoaded", function () {
       option.textContent = unidade.nome;
       selectUBS.appendChild(option);
     });
+
+    console.log(`✅ Select de UBS preenchido com ${unidades.length} unidades`);
   }
 
   function carregarEPreencherUnidades() {
