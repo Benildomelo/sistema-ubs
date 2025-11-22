@@ -1,4 +1,4 @@
-// agendar-consulta.js - VERSÃO COM UNIDADES CORRETAS E PROFISSIONAL BLOQUEADO
+// agendar-consulta.js - VERSÃO COM UNIDADES FUNCIONANDO
 document.addEventListener("DOMContentLoaded", function () {
   console.log("=== INICIANDO AGENDAR CONSULTA ===");
 
@@ -14,17 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     originalAppointmentId = rescheduleData.originalAppointmentId;
     console.log("🔄 MODO REAGENDAMENTO:", rescheduleData);
-
-    if (rescheduleData.especialidade) {
-      preencherDadosReagendamento(rescheduleData);
-    }
   }
 
-  // Carregar e preencher unidades
-  carregarEPreencherUnidades();
+  // CARREGAR UNIDADES IMEDIATAMENTE
+  carregarUnidadesNoSelect();
 
   const especialidadeSelect = document.getElementById("especialidade");
   const profissionalSelect = document.getElementById("profissional");
+  const dataInput = document.getElementById("data");
+  const horarioSelect = document.getElementById("horario");
+  const ubsSelect = document.getElementById("ubs");
 
   const profissionaisPorEspecialidade = {
     "Clínico Geral": [
@@ -50,6 +49,57 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   };
 
+  // Preencher dados do reagendamento APÓS carregar unidades
+  if (isReschedule && rescheduleData.especialidade) {
+    setTimeout(() => {
+      preencherDadosReagendamento(rescheduleData);
+    }, 100);
+  }
+
+  // FUNÇÃO SIMPLIFICADA PARA CARREGAR UNIDADES
+  function carregarUnidadesNoSelect() {
+    console.log("🚀 Carregando unidades no select...");
+
+    const ubsSelect = document.getElementById("ubs");
+    if (!ubsSelect) {
+      console.error("❌ Select UBS não encontrado!");
+      return;
+    }
+
+    // Dados das UBSs (mesmo do unidades.js)
+    const unidades = [
+      { id: 1, nome: "UBS Parque Piauí" },
+      { id: 2, nome: "UBS Vila Bandeirante" },
+      { id: 3, nome: "UBS São Joaquim" },
+      { id: 4, nome: "UBS Mocambinho" },
+      { id: 5, nome: "UBS Buenos Aires" },
+      { id: 6, nome: "UBS Poti Velho" },
+      { id: 7, nome: "UBS Santa Maria da Codipe" },
+      { id: 8, nome: "UBS Parque Sul" },
+      { id: 9, nome: "UBS Gurupi" },
+      { id: 10, nome: "UBS Saci" },
+      { id: 11, nome: "UBS Vila Operária" },
+      { id: 12, nome: "UBS Promorar" },
+    ];
+
+    // Limpar select
+    ubsSelect.innerHTML = '<option value="">Selecione a UBS</option>';
+
+    // Adicionar unidades
+    unidades.forEach((unidade) => {
+      const option = document.createElement("option");
+      option.value = unidade.id;
+      option.textContent = unidade.nome;
+      ubsSelect.appendChild(option);
+    });
+
+    console.log("✅ Select UBS preenchido com", unidades.length, "unidades");
+    console.log(
+      "📋 Unidades carregadas:",
+      unidades.map((u) => u.nome)
+    );
+  }
+
   // Preencher dados do reagendamento
   function preencherDadosReagendamento(data) {
     console.log("📝 Preenchendo dados do reagendamento:", data);
@@ -58,45 +108,102 @@ document.addEventListener("DOMContentLoaded", function () {
     if (data.especialidade) {
       especialidadeSelect.value = data.especialidade;
       // Disparar evento para carregar profissionais
-      especialidadeSelect.dispatchEvent(new Event("change"));
+      const event = new Event("change");
+      especialidadeSelect.dispatchEvent(event);
     }
 
-    // Preencher profissional após um pequeno delay para carregar as opções
+    // Preencher profissional
     setTimeout(() => {
       if (data.profissionalId) {
         profissionalSelect.value = data.profissionalId;
 
-        // CORREÇÃO: BLOQUEAR SELECT DO PROFISSIONAL NO REAGENDAMENTO
+        // BLOQUEAR SELECT DO PROFISSIONAL NO REAGENDAMENTO
         profissionalSelect.disabled = true;
         profissionalSelect.title =
           "Não é possível alterar o profissional no reagendamento";
-
-        // Adicionar estilo visual para indicar que está bloqueado
         profissionalSelect.style.backgroundColor = "#f3f4f6";
         profissionalSelect.style.cursor = "not-allowed";
-      }
-    }, 200);
 
-    // Preencher unidade
-    if (data.ubs) {
-      const ubsSelect = document.getElementById("ubs");
-      if (typeof data.ubs === "object") {
-        ubsSelect.value = data.ubs.id;
-      } else {
-        // Tentar encontrar a unidade pelo nome se for string
-        const unidades = carregarUnidades();
-        const unidadeEncontrada = unidades.find((u) => u.nome === data.ubs);
-        if (unidadeEncontrada) {
-          ubsSelect.value = unidadeEncontrada.id;
-        }
+        // HABILITAR DATA E HORÁRIO
+        dataInput.disabled = false;
+        horarioSelect.disabled = false;
       }
+    }, 300);
+
+    // Preencher unidade - CORREÇÃO MELHORADA
+    if (data.ubs) {
+      console.log("🔍 Tentando preencher UBS:", data.ubs);
+
+      // Pequeno delay para garantir que o select foi preenchido
+      setTimeout(() => {
+        let ubsIdParaPreencher = null;
+
+        if (typeof data.ubs === "object") {
+          ubsIdParaPreencher = data.ubs.id;
+          console.log("✅ UBS encontrada por objeto:", data.ubs.id);
+        } else {
+          // Se for string, tentar encontrar pelo nome
+          const unidades = [
+            { id: 1, nome: "UBS Parque Piauí" },
+            { id: 2, nome: "UBS Vila Bandeirante" },
+            { id: 3, nome: "UBS São Joaquim" },
+            { id: 4, nome: "UBS Mocambinho" },
+            { id: 5, nome: "UBS Buenos Aires" },
+            { id: 6, nome: "UBS Poti Velho" },
+            { id: 7, nome: "UBS Santa Maria da Codipe" },
+            { id: 8, nome: "UBS Parque Sul" },
+            { id: 9, nome: "UBS Gurupi" },
+            { id: 10, nome: "UBS Saci" },
+            { id: 11, nome: "UBS Vila Operária" },
+            { id: 12, nome: "UBS Promorar" },
+          ];
+
+          const unidadeEncontrada = unidades.find(
+            (u) => u.nome === data.ubs || u.id == data.ubs
+          );
+
+          if (unidadeEncontrada) {
+            ubsIdParaPreencher = unidadeEncontrada.id;
+            console.log("✅ UBS encontrada por nome/ID:", unidadeEncontrada.id);
+          } else {
+            console.log("❌ UBS não encontrada:", data.ubs);
+          }
+        }
+
+        // Preencher o select
+        if (ubsIdParaPreencher) {
+          ubsSelect.value = ubsIdParaPreencher;
+          console.log("🎯 UBS preenchida no select:", ubsIdParaPreencher);
+        }
+      }, 200);
+    }
+
+    // Preencher data original
+    if (data.dataOriginal) {
+      dataInput.value = data.dataOriginal;
+      console.log("📅 Data original preenchida:", data.dataOriginal);
+
+      // Disparar evento para carregar horários
+      setTimeout(() => {
+        const event = new Event("change");
+        dataInput.dispatchEvent(event);
+
+        // Preencher horário original
+        if (data.horarioOriginal) {
+          setTimeout(() => {
+            horarioSelect.value = data.horarioOriginal;
+            console.log(
+              "⏰ Horário original preenchido:",
+              data.horarioOriginal
+            );
+          }, 200);
+        }
+      }, 100);
     }
 
     // Atualizar título da página
-    document.querySelector("h1").textContent = "Reagendar Consulta";
-
-    // Adicionar badge de reagendamento
     const titulo = document.querySelector("h1");
+    titulo.textContent = "Reagendar Consulta";
     titulo.innerHTML +=
       ' <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded ml-2">Reagendamento</span>';
   }
@@ -116,14 +223,19 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // Se for reagendamento, manter o profissional bloqueado
+    // Se for reagendamento, manter o profissional bloqueado mas habilitar outros campos
     if (isReschedule) {
       profissionalSelect.disabled = true;
+      dataInput.disabled = false;
+      horarioSelect.disabled = false;
+    } else {
+      profissionalSelect.disabled = !this.value;
+      dataInput.disabled = !profissionalSelect.value;
+      horarioSelect.disabled = !dataInput.value;
     }
   });
 
   // Configurar data mínima (hoje)
-  const dataInput = document.getElementById("data");
   const hoje = new Date();
   const hojeAjustado = new Date(
     hoje.getTime() - hoje.getTimezoneOffset() * 60000
@@ -175,9 +287,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // DIFERENÇA PRINCIPAL: Verificar se é reagendamento
+    // Verificar se é reagendamento
     if (isReschedule && originalAppointmentId) {
-      // REAGENDAMENTO: Atualizar consulta existente
       atualizarConsultaExistente(originalAppointmentId, {
         especialidade: especialidade,
         profissional: {
@@ -194,7 +305,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dataReagendamento: new Date().toISOString(),
       });
     } else {
-      // NOVO AGENDAMENTO: Criar nova consulta
       const novaConsulta = {
         id: Date.now(),
         paciente: {
@@ -232,22 +342,19 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
       if (consultaIndex !== -1) {
-        // Manter os dados originais que não foram alterados
         const consultaOriginal = consultas[consultaIndex];
 
         consultas[consultaIndex] = {
-          ...consultaOriginal, // Mantém dados como id, paciente, etc.
-          ...novosDados, // Atualiza com novos dados
-          id: consultaOriginal.id, // Garante que o ID não mude
-          paciente: consultaOriginal.paciente, // Mantém dados do paciente
+          ...consultaOriginal,
+          ...novosDados,
+          id: consultaOriginal.id,
+          paciente: consultaOriginal.paciente,
         };
 
         localStorage.setItem("consultasAgendadas", JSON.stringify(consultas));
         console.log("✅ Consulta atualizada:", consultas[consultaIndex]);
 
-        // Limpar dados de reagendamento
         localStorage.removeItem("ubs_reschedule_data");
-
         mostrarConfirmacao(consultas[consultaIndex], true);
       } else {
         alert("Erro: Consulta não encontrada para reagendamento.");
@@ -297,44 +404,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Configurar dependências dos campos
   function configurarDependenciasCampos() {
-    const campos = {
-      especialidade: document.getElementById("especialidade"),
-      profissional: document.getElementById("profissional"),
-      data: document.getElementById("data"),
-      horario: document.getElementById("horario"),
-      ubs: document.getElementById("ubs"),
-    };
+    console.log("⚙️ Configurando dependências dos campos...");
 
-    campos.profissional.disabled = true;
-    campos.data.disabled = true;
-    campos.horario.disabled = true;
+    // Estado inicial
+    profissionalSelect.disabled = !especialidadeSelect.value;
+    dataInput.disabled = !profissionalSelect.value;
+    horarioSelect.disabled = !dataInput.value;
 
-    campos.especialidade.addEventListener("change", function () {
-      campos.profissional.disabled = !this.value || isReschedule; // Mantém bloqueado se for reagendamento
-      if (!this.value) {
-        campos.data.disabled = true;
-        campos.horario.disabled = true;
+    if (isReschedule) {
+      profissionalSelect.disabled = true;
+      dataInput.disabled = false;
+      horarioSelect.disabled = false;
+    }
+
+    especialidadeSelect.addEventListener("change", function () {
+      if (isReschedule) {
+        profissionalSelect.disabled = true;
+        dataInput.disabled = false;
+        horarioSelect.disabled = false;
+      } else {
+        profissionalSelect.disabled = !this.value;
+        dataInput.disabled = !profissionalSelect.value;
+        horarioSelect.disabled = !dataInput.value;
       }
     });
 
-    campos.profissional.addEventListener("change", function () {
-      campos.data.disabled = !this.value;
-      if (!this.value) {
-        campos.horario.disabled = true;
+    profissionalSelect.addEventListener("change", function () {
+      if (isReschedule) {
+        dataInput.disabled = false;
+        horarioSelect.disabled = false;
+      } else {
+        dataInput.disabled = !this.value;
+        horarioSelect.disabled = !dataInput.value;
       }
     });
 
-    campos.data.addEventListener("change", function () {
-      campos.horario.disabled = !this.value;
+    dataInput.addEventListener("change", function () {
+      if (isReschedule) {
+        horarioSelect.disabled = false;
+      } else {
+        horarioSelect.disabled = !this.value;
+      }
     });
   }
 
   configurarDependenciasCampos();
 
   function configurarHorariosDisponiveis() {
-    const dataInput = document.getElementById("data");
-    const horarioSelect = document.getElementById("horario");
-
     dataInput.addEventListener("change", function () {
       const dataValor = this.value;
 
@@ -351,10 +467,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const dataSelecionada = new Date(ano, mes, dia);
 
-      // Limpar horários
       horarioSelect.innerHTML = '<option value="">Selecione o horário</option>';
 
-      // Verificar se é domingo
       if (dataSelecionada.getDay() === 0) {
         alert(
           "As unidades não funcionam aos domingos. Por favor, selecione outra data."
@@ -363,11 +477,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Definir horários baseado no dia da semana
       let horariosDisponiveis = [];
 
       if (dataSelecionada.getDay() >= 1 && dataSelecionada.getDay() <= 5) {
-        // Segunda a Sexta
         horariosDisponiveis = [
           "08:00",
           "08:30",
@@ -383,7 +495,6 @@ document.addEventListener("DOMContentLoaded", function () {
           "16:30",
         ];
       } else if (dataSelecionada.getDay() === 6) {
-        // Sábado
         horariosDisponiveis = [
           "08:00",
           "08:30",
@@ -394,172 +505,16 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
       }
 
-      // Adicionar horários ao select
       horariosDisponiveis.forEach((horario) => {
         const option = document.createElement("option");
         option.value = horario;
         option.textContent = horario;
         horarioSelect.appendChild(option);
       });
+
+      horarioSelect.disabled = false;
     });
   }
 
   configurarHorariosDisponiveis();
-
-  // FUNÇÕES PARA CARREGAR UNIDADES - USANDO AS MESMAS DO unidades.js
-  function carregarUnidades() {
-    let unidadesSalvas = localStorage.getItem("ubs_unidades");
-
-    if (unidadesSalvas) {
-      return JSON.parse(unidadesSalvas);
-    }
-
-    // Dados reais das UBSs de Teresina - PI (mesmo do unidades.js)
-    const unidadesPadrao = [
-      {
-        id: 1,
-        nome: "UBS Parque Piauí",
-        endereco: "Rua 12, Parque Piauí - Teresina, PI",
-        telefone: "(86) 3216-1650",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
-        distancia: "2.1 km",
-        lat: -5.0921,
-        lng: -42.8038,
-      },
-      {
-        id: 2,
-        nome: "UBS Vila Bandeirante",
-        endereco: "Rua São Pedro, Vila Bandeirante - Teresina, PI",
-        telefone: "(86) 3216-1651",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "3.5 km",
-        lat: -5.0689,
-        lng: -42.7972,
-      },
-      {
-        id: 3,
-        nome: "UBS São Joaquim",
-        endereco: "Av. Principal, São Joaquim - Teresina, PI",
-        telefone: "(86) 3216-1652",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "4.2 km",
-        lat: -5.1156,
-        lng: -42.7758,
-      },
-      {
-        id: 4,
-        nome: "UBS Mocambinho",
-        endereco: "Rua 10, Mocambinho - Teresina, PI",
-        telefone: "(86) 3216-1653",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
-        distancia: "5.8 km",
-        lat: -5.0572,
-        lng: -42.7669,
-      },
-      {
-        id: 5,
-        nome: "UBS Buenos Aires",
-        endereco: "Rua São José, Buenos Aires - Teresina, PI",
-        telefone: "(86) 3216-1654",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "1.8 km",
-        lat: -5.0817,
-        lng: -42.7894,
-      },
-      {
-        id: 6,
-        nome: "UBS Poti Velho",
-        endereco: "Av. Boa Esperança, Poti Velho - Teresina, PI",
-        telefone: "(86) 3216-1655",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "3.2 km",
-        lat: -5.0664,
-        lng: -42.8111,
-      },
-      {
-        id: 7,
-        nome: "UBS Santa Maria da Codipe",
-        endereco: "Rua Santa Maria, Santa Maria da Codipe - Teresina, PI",
-        telefone: "(86) 3216-1656",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "6.1 km",
-        lat: -5.1233,
-        lng: -42.7556,
-      },
-      {
-        id: 8,
-        nome: "UBS Parque Sul",
-        endereco: "Av. Central, Parque Sul - Teresina, PI",
-        telefone: "(86) 3216-1657",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
-        distancia: "4.5 km",
-        lat: -5.0989,
-        lng: -42.755,
-      },
-      {
-        id: 9,
-        nome: "UBS Gurupi",
-        endereco: "Rua Principal, Gurupi - Teresina, PI",
-        telefone: "(86) 3216-1658",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "7.2 km",
-        lat: -5.135,
-        lng: -42.7889,
-      },
-      {
-        id: 10,
-        nome: "UBS Saci",
-        endereco: "Rua São Paulo, Saci - Teresina, PI",
-        telefone: "(86) 3216-1659",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "2.8 km",
-        lat: -5.0711,
-        lng: -42.7722,
-      },
-      {
-        id: 11,
-        nome: "UBS Vila Operária",
-        endereco: "Rua da Paz, Vila Operária - Teresina, PI",
-        telefone: "(86) 3216-1660",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h | Sábado: 7h às 12h",
-        distancia: "1.5 km",
-        lat: -5.0883,
-        lng: -42.8,
-      },
-      {
-        id: 12,
-        nome: "UBS Promorar",
-        endereco: "Av. dos Imigrantes, Promorar - Teresina, PI",
-        telefone: "(86) 3216-1661",
-        horarioFuncionamento: "Segunda a Sexta: 7h às 17h",
-        distancia: "5.3 km",
-        lat: -5.1056,
-        lng: -42.7333,
-      },
-    ];
-
-    localStorage.setItem("ubs_unidades", JSON.stringify(unidadesPadrao));
-    return unidadesPadrao;
-  }
-
-  function preencherSelectUnidades(unidades) {
-    const selectUBS = document.getElementById("ubs");
-    if (!selectUBS) return;
-
-    selectUBS.innerHTML = '<option value="">Selecione a UBS</option>';
-
-    unidades.forEach((unidade) => {
-      const option = document.createElement("option");
-      option.value = unidade.id;
-      option.textContent = unidade.nome;
-      selectUBS.appendChild(option);
-    });
-
-    console.log(`✅ Select de UBS preenchido com ${unidades.length} unidades`);
-  }
-
-  function carregarEPreencherUnidades() {
-    const unidades = carregarUnidades();
-    preencherSelectUnidades(unidades);
-  }
 });
