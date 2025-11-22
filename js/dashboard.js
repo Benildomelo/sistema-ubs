@@ -1,4 +1,4 @@
-// dashboard.js - VERSÃO CORRIGIDA COM REAGENDAMENTO DIRETO
+// dashboard.js - VERSÃO CORRIGIDA COMPLETA
 class PatientDashboard {
   constructor() {
     this.currentUser = null;
@@ -280,15 +280,26 @@ class PatientDashboard {
                         <div class="mb-4">
                             <h4 class="font-semibold text-green-600 mb-2">Consultas de Hoje</h4>
                             ${this.todayAppointments
-                              .map(
-                                (appt) => `
+                              .map((appt) => {
+                                // CORREÇÃO: Tratar unidade como objeto
+                                let unidadeNome = appt.unidade;
+                                if (
+                                  typeof appt.unidade === "object" &&
+                                  appt.unidade !== null
+                                ) {
+                                  unidadeNome =
+                                    appt.unidade.nome ||
+                                    "Unidade não especificada";
+                                }
+
+                                return `
                                 <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-2">
                                     <p class="font-medium text-green-800 dark:text-green-300">${appt.especialidade}</p>
-                                    <p class="text-sm text-green-600 dark:text-green-400">${appt.horario} - ${appt.unidade}</p>
+                                    <p class="text-sm text-green-600 dark:text-green-400">${appt.horario} - ${unidadeNome}</p>
                                     <p class="text-xs text-green-500 dark:text-green-500 mt-1">Com ${appt.profissional.nome}</p>
                                 </div>
-                            `
-                              )
+                            `;
+                              })
                               .join("")}
                         </div>
                     `
@@ -306,8 +317,19 @@ class PatientDashboard {
                         <div class="mt-4">
                             <h4 class="font-semibold text-blue-600 mb-2">Próximas Consultas</h4>
                             ${this.getUpcomingAppointments()
-                              .map(
-                                (appt) => `
+                              .map((appt) => {
+                                // CORREÇÃO: Tratar unidade como objeto
+                                let unidadeNome = appt.unidade;
+                                if (
+                                  typeof appt.unidade === "object" &&
+                                  appt.unidade !== null
+                                ) {
+                                  unidadeNome =
+                                    appt.unidade.nome ||
+                                    "Unidade não especificada";
+                                }
+
+                                return `
                                 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-2">
                                     <p class="font-medium text-blue-800 dark:text-blue-300">${
                                       appt.especialidade
@@ -315,12 +337,10 @@ class PatientDashboard {
                                     <p class="text-sm text-blue-600 dark:text-blue-400">${this.formatDate(
                                       appt.data
                                     )} às ${appt.horario}</p>
-                                    <p class="text-xs text-blue-500 dark:text-blue-500 mt-1">${
-                                      appt.unidade
-                                    }</p>
+                                    <p class="text-xs text-blue-500 dark:text-blue-500 mt-1">${unidadeNome}</p>
                                 </div>
-                            `
-                              )
+                            `;
+                              })
                               .join("")}
                         </div>
                     `
@@ -503,6 +523,21 @@ class PatientDashboard {
 
         const status = statusConfig[appt.status] || statusConfig.agendada;
 
+        // CORREÇÃO: Verificar se unidade é objeto ou string
+        let unidadeNome = appt.unidade;
+        if (typeof appt.unidade === "object" && appt.unidade !== null) {
+          unidadeNome = appt.unidade.nome || "Unidade não especificada";
+        }
+
+        // CORREÇÃO: Formatar nome do profissional (remover "Dr."/ "Dra." duplicados)
+        let profissionalNome = appt.profissional.nome;
+        if (
+          profissionalNome.startsWith("Dr. ") ||
+          profissionalNome.startsWith("Dra. ")
+        ) {
+          profissionalNome = profissionalNome.replace(/^(Dr\. |Dra\. )/, "");
+        }
+
         const botoes =
           tipo === "agendadas"
             ? `
@@ -529,12 +564,8 @@ class PatientDashboard {
                         <p class="text-gray-600 dark:text-gray-300">${this.formatDate(
                           appt.data
                         )} às ${appt.horario}</p>
-                        <p class="text-gray-600 dark:text-gray-300">${
-                          appt.unidade
-                        }</p>
-                        <p class="text-gray-600 dark:text-gray-300">Dr(a). ${
-                          appt.profissional.nome
-                        }</p>
+                        <p class="text-gray-600 dark:text-gray-300">${unidadeNome}</p>
+                        <p class="text-gray-600 dark:text-gray-300">Dr(a). ${profissionalNome}</p>
                         <span class="inline-block px-2 py-1 text-xs font-medium rounded-full ${
                           status.color
                         } ${status.bgColor}">
