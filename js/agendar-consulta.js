@@ -373,27 +373,38 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Consulta salva:", consulta);
   }
 
+  // NO agendar-consulta.js - ATUALIZE A FUNÇÃO mostrarConfirmacao
   function mostrarConfirmacao(consulta, isReschedule) {
-    const dataFormatada = new Date(consulta.data).toLocaleDateString("pt-BR");
+    // CORREÇÃO DO FUSO HORÁRIO - Formatar data corretamente
+    const dataObj = new Date(consulta.data + "T00:00:00"); // Adiciona horário para evitar problemas de fuso
+    const dataFormatada = dataObj.toLocaleDateString("pt-BR");
+
+    // DEBUG: Verificar datas
+    console.log("📅 Debug de datas:", {
+      dataOriginal: consulta.data,
+      dataObj: dataObj,
+      dataFormatada: dataFormatada,
+      timezoneOffset: dataObj.getTimezoneOffset(),
+    });
 
     const mensagem = `
-            ✅ ${
-              isReschedule ? "Consulta reagendada" : "Consulta agendada"
-            } com sucesso!
+        ✅ ${
+          isReschedule ? "Consulta reagendada" : "Consulta agendada"
+        } com sucesso!
 
-            📋 Detalhes da consulta:
-            • Especialidade: ${consulta.especialidade}
-            • Profissional: ${consulta.profissional.nome}
-            • Data: ${dataFormatada}
-            • Horário: ${consulta.horario}
-            • Unidade: ${
-              typeof consulta.unidade === "object"
-                ? consulta.unidade.nome
-                : consulta.unidade
-            }
+        📋 Detalhes da consulta:
+        • Especialidade: ${consulta.especialidade}
+        • Profissional: ${consulta.profissional.nome}
+        • Data: ${dataFormatada}
+        • Horário: ${consulta.horario}
+        • Unidade: ${
+          typeof consulta.unidade === "object"
+            ? consulta.unidade.nome
+            : consulta.unidade
+        }
 
-            Você receberá um lembrete 24h antes da consulta.
-        `;
+        Você receberá um lembrete 24h antes da consulta.
+    `;
 
     alert(mensagem);
 

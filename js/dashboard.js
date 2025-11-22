@@ -650,12 +650,33 @@ class PatientDashboard {
   }
 
   formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", {
+    // CORREÇÃO DO FUSO HORÁRIO
+    console.log("🔍 Formatando data:", dateString);
+
+    // Criar data com horário local para evitar problemas de fuso
+    const date = new Date(dateString + "T00:00:00");
+
+    // Verificar se a data é válida
+    if (isNaN(date.getTime())) {
+      console.error("❌ Data inválida:", dateString);
+      return "Data inválida";
+    }
+
+    const dataFormatada = date.toLocaleDateString("pt-BR", {
       day: "numeric",
       month: "long",
       year: "numeric",
     });
+
+    console.log("✅ Data formatada:", {
+      original: dateString,
+      formatada: dataFormatada,
+      dia: date.getDate(),
+      mes: date.getMonth() + 1,
+      ano: date.getFullYear(),
+    });
+
+    return dataFormatada;
   }
 }
 
