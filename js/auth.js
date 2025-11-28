@@ -2,11 +2,9 @@ class AuthSystem {
   constructor() {
     this.currentUser = null;
     this.isAuthenticated = false;
-    this.init();
 
     if (typeof usersDB === "undefined") {
       console.error("❌ usersDB não encontrado!");
-      //Tenta criar se não existir
       if (typeof UsersDB !== "undefined") {
         window.usersDB = new UsersDB();
       }
@@ -20,9 +18,7 @@ class AuthSystem {
       try {
         this.currentUser = JSON.parse(savedUser);
         this.isAuthenticated = true;
-
         console.log("Usuário já logado:", this.currentUser.name);
-
         this.showContinueButton();
       } catch (error) {
         console.error("Erro ao carregar usuário:", error);
@@ -34,13 +30,26 @@ class AuthSystem {
   }
 
   initializeEventListeners() {
-    const passwordToggle = document.querySelector(".password-toggle");
-    if (passwordToggle) {
-      passwordToggle.addEventListener(
+    console.log("Inicializando event listeners de autenticação...");
+
+    // DEBUG: Verificar elementos antes de adicionar eventos
+    const passwordToggles = document.querySelectorAll(".password-toggle");
+    console.log(
+      "Botões de toggle de senha encontrados:",
+      passwordToggles.length
+    );
+
+    passwordToggles.forEach((toggle, index) => {
+      console.log(`Botão ${index}:`, toggle);
+      toggle.addEventListener(
         "click",
         this.togglePasswordVisibility.bind(this)
       );
-    }
+
+      // Adiciona estilo visual para debug
+      toggle.style.cursor = "pointer";
+      toggle.style.zIndex = "1000";
+    });
 
     const loginForm = document.getElementById("loginForm");
     if (loginForm) {
@@ -53,6 +62,14 @@ class AuthSystem {
     userTypeSelectors.forEach((radio) => {
       radio.addEventListener("change", this.handleUserTypeChange.bind(this));
     });
+
+    // DEBUG: Verificar se o input de senha existe
+    const passwordInput = document.getElementById("loginPassword");
+    console.log("Input de senha encontrado:", passwordInput);
+    if (passwordInput) {
+      console.log("Tipo do input:", passwordInput.type);
+      console.log("Container do input:", passwordInput.closest(".relative"));
+    }
   }
 
   showContinueButton() {
@@ -99,19 +116,45 @@ class AuthSystem {
     }
   }
 
-  togglePasswordVisibility() {
-    const passwordInput = document.getElementById("loginPassword");
-    const toggleIcon = document.querySelector(
-      ".password-toggle .material-symbols-outlined"
-    );
+  togglePasswordVisibility(event) {
+    console.log("🎯 togglePasswordVisibility CHAMADO!");
+    event.preventDefault();
+    event.stopPropagation();
 
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      toggleIcon.textContent = "visibility_off";
-    } else {
-      passwordInput.type = "password";
-      toggleIcon.textContent = "visibility";
+    const button = event.currentTarget;
+    console.log("🔍 Botão clicado:", button);
+
+    // Método DIRETO - busca pelo ID específico
+    const input = document.getElementById("loginPassword");
+    console.log("🔍 Input encontrado pelo ID:", input);
+
+    if (!input) {
+      console.error("❌ Input de senha não encontrado pelo ID 'loginPassword'");
+
+      // Tentativa alternativa: buscar por tipo
+      const inputs = document.querySelectorAll(
+        'input[type="password"], input[type="text"]'
+      );
+      console.log("🔍 Inputs alternativos encontrados:", inputs.length);
+      return;
     }
+
+    const icon = button.querySelector(".material-symbols-outlined");
+    console.log("🔍 Ícone encontrado:", icon);
+
+    // Alterna entre password e text
+    if (input.type === "password") {
+      input.type = "text";
+      if (icon) icon.textContent = "visibility_off";
+      console.log("🔒 Senha agora VISÍVEL");
+    } else {
+      input.type = "password";
+      if (icon) icon.textContent = "visibility";
+      console.log("👁️ Senha agora OCULTA");
+    }
+
+    // Mantém o foco no input
+    input.focus();
   }
 
   handleUserTypeChange(event) {
@@ -262,4 +305,23 @@ class AuthSystem {
   }
 }
 
+// DEBUG FINAL - Verificar se tudo carregou corretamente
+console.log("=== AUTH SYSTEM INICIADO ===");
+console.log("URL atual:", window.location.href);
+
+// Inicializar o sistema
 const authSystem = new AuthSystem();
+
+// Adicionar debug adicional após carregamento completo
+setTimeout(() => {
+  console.log("=== DEBUG FINAL ===");
+  const passwordToggle = document.querySelector(".password-toggle");
+  const passwordInput = document.getElementById("loginPassword");
+
+  console.log("🔍 Elemento password-toggle:", passwordToggle);
+  console.log("🔍 Elemento loginPassword:", passwordInput);
+  console.log(
+    "🔍 Estilo do botão:",
+    passwordToggle ? window.getComputedStyle(passwordToggle) : "Não encontrado"
+  );
+}, 1000);
