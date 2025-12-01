@@ -2,7 +2,7 @@
 Sistema completo para agendamento em Unidades Básicas de Saúde, com funcionalidades para pacientes e profissionais.
 
 🚀 Como Usar
-Acesse: https://seuusuario.github.io/ubs-system
+Acesse: https://benildomelo.github.io/sistema-ubs/
 
 📋 Contas para Teste
 Paciente:
